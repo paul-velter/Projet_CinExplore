@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CinExplore</string>
+    <string name="default_film_title">Titre du film</string>
+    <string name="default_film_synopsis">Synopsis du film</string>
+</resources>
