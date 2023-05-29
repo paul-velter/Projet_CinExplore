@@ -2,37 +2,62 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="175dp"
-    android:layout_height="240dp"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
     android:layout_margin="8dp"
     android:id="@+id/view_film_cardview">
 
-    <ImageView
-        android:id="@+id/view_film_imageview"
-        android:layout_width="175dp"
-        android:layout_height="155dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/view_film_title_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="@string/default_film_title"
-        tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="188dp" />
+            <ImageView
+                android:id="@+id/view_film_poster_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:srcCompat="@drawable/ic_launcher_background" />
 
-    <TextView
-        android:id="@+id/view_film_synopsis_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="220dp"
-        android:text="@string/default_film_synopsis"
-        tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="188dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/view_film_title_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/default_film_title"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/view_film"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/default_film_categorie" />
+
+                <TextView
+                    android:id="@+id/view_film_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Temps" />
+
+                <TextView
+                    android:id="@+id/view_film_rating_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/default_film_rating" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
 </androidx.cardview.widget.CardView>

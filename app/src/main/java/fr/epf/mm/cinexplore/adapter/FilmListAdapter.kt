@@ -5,9 +5,11 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import fr.epf.mm.cinexplore.model.Film
 import fr.epf.mm.cinexplore.R
 
@@ -26,11 +28,12 @@ class FilmListAdapter (val context: Context, val films: List<Film>) : RecyclerVi
     override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
         val film = films[position]
         val view = holder.itemView
-        val film_title = view.findViewById<TextView>(R.id.view_film_title_textview)
+        val film_title = view.findViewById<TextView>(R.id.view_film_title_textView)
         film_title.text="${film.title}"
-        val film_synopsis = view.findViewById<TextView>(R.id.view_film_synopsis_textview)
-        film_synopsis.text="${film.synopsis}"
-
+        val film_poster = view.findViewById<ImageView>(R.id.view_film_poster_imageView)
+        Glide.with(context)
+            .load("https://image.tmdb.org/t/p/w500/${film.posterPath}?api_key=79bc1a7b946265b5f9dd2e89b2a118b2")
+            .into(film_poster)
     }
 
 }

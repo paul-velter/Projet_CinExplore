@@ -47,6 +47,7 @@ class FilmListActivity : AppCompatActivity() {
                     )
                 }
                 recyclerView.adapter = FilmListAdapter(this@FilmListActivity, films)
+                Log.d("CLICK", films.toString())
             }
         }
     }
