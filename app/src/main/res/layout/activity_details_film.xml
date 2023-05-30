@@ -25,7 +25,7 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/detail_film_category_textView"
+            android:id="@+id/detail_film_genres_textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/default_film_categorie" />

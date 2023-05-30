@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -19,6 +20,13 @@ class FilmViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
 class FilmListAdapter (val context: Context, val films: List<Film>) : RecyclerView.Adapter<FilmViewHolder>(){
 
+    private lateinit var film_poster: ImageView
+    private lateinit var film_title: TextView
+    private lateinit var film_rating: TextView
+    private lateinit var film_time: TextView
+    private lateinit var film_voteCount: TextView
+    private lateinit var film_genre: TextView
+    private lateinit var cardView: CardView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.viewholder_film_list, parent, false)
@@ -31,24 +39,27 @@ class FilmListAdapter (val context: Context, val films: List<Film>) : RecyclerVi
         val film = films[position]
         val view = holder.itemView
 
-        val film_poster = view.findViewById<ImageView>(R.id.view_film_poster_imageView)
+        film_poster = view.findViewById<ImageView>(R.id.view_film_poster_imageView)
         Glide.with(context)
             .load("https://image.tmdb.org/t/p/w500/${film.posterPath}?api_key=79bc1a7b946265b5f9dd2e89b2a118b2")
             .into(film_poster)
 
-        val film_title = view.findViewById<TextView>(R.id.view_film_title_textView)
+        film_title = view.findViewById<TextView>(R.id.view_film_title_textView)
         film_title.text = film.title
 
-        val film_rating = view.findViewById<TextView>(R.id.view_film_voteAverage_textView)
+        film_rating = view.findViewById<TextView>(R.id.view_film_voteAverage_textView)
         film_rating.text = DecimalFormat("#.#").format(film.vote_average)
 
-        val film_time = view.findViewById<TextView>(R.id.view_film_time_textView)
-        film_time.text = film.runtime.toString()
+        film_time = view.findViewById<TextView>(R.id.view_film_time_textView)
+        film_time.text = film.runtime.toString() + " min."
 
-        val film_voteCount = view.findViewById<TextView>(R.id.view_film_voteCount_textView)
+        film_voteCount = view.findViewById<TextView>(R.id.view_film_voteCount_textView)
         film_voteCount.text = film.vote_count.toString()
 
-        val cardView = view.findViewById<CardView>(R.id.view_film_cardview)
+        film_genre = view.findViewById<TextView>(R.id.view_film_genres_textView)
+        film_genre.text = film.genre.map { it }.joinToString(" / ")
+
+        cardView = view.findViewById<CardView>(R.id.view_film_cardview)
         cardView.setOnClickListener{
             val intent = Intent(context, DetailsFilmActivity::class.java)
             intent.putExtra("film", film)

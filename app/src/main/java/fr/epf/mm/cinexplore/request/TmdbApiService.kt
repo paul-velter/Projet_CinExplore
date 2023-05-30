@@ -17,7 +17,12 @@ interface TmdbApiService {
         @Query("query") query: String,
         @Query("page") page: Int
     ): GetTmdbResult
-
+    @GET("discover/movie")
+    suspend fun searchMoviesByGenre(
+        @Query("api_key") apiKey: String,
+        @Query("with_genres") genreId: Int,
+        @Query("page") page: Int
+    ): GetTmdbResult
     @GET("movie/{movie_id}")
     suspend fun searchMoviesById(
         @Path("movie_id") id: Int,
@@ -25,4 +30,5 @@ interface TmdbApiService {
     ): Film
 }
 data class GetTmdbResult(val results: List<Film>)
-data class Film(val id: Int, val poster_path: String?, val title: String, val release_date: String, val runtime: Int, val overview: String, val vote_average: Float, val vote_count: Int)
+data class Film(val id: Int, val poster_path: String?, val title: String, val genres: List<Genre>, val release_date: String, val runtime: Int, val overview: String, val vote_average: Float, val vote_count: Int)
+data class Genre(val id: Int, val name: String)

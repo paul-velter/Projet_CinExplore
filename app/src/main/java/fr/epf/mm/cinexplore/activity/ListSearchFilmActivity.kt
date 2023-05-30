@@ -84,15 +84,18 @@ class ListSearchFilmActivity : AppCompatActivity() {
     private fun searchFilmsByTitle(query: String) {
         GlobalScope.launch(Dispatchers.Main) {
             val films = tmdbService.searchMoviesByTitle("79bc1a7b946265b5f9dd2e89b2a118b2", query,1).results.map {
+                val filmDetails = tmdbService.searchMoviesById(it.id, "79bc1a7b946265b5f9dd2e89b2a118b2")
                 Film(
-                    it.id,
-                    it.poster_path,
-                    it.title,
-                    it.release_date,
-                    it.runtime,
-                    it.overview,
-                    it.vote_average,
-                    it.vote_count
+                    filmDetails.id,
+                    filmDetails.poster_path,
+                    filmDetails.title,
+                    filmDetails.genres.map { it.name },
+                    filmDetails.genres.map { it.id },
+                    filmDetails.release_date,
+                    filmDetails.runtime,
+                    filmDetails.overview,
+                    filmDetails.vote_average,
+                    filmDetails.vote_count
                 )
             }
             recyclerView.adapter = FilmListAdapter(this@ListSearchFilmActivity, films)
