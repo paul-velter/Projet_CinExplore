@@ -14,7 +14,7 @@
         android:theme="@style/Theme.CinExplore"
         tools:targetApi="31">
         <activity
-            android:name=".activity.ListFilmActivity"
+            android:name=".activity.ListSearchFilmActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -12,13 +12,13 @@ import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ListFilmActivity : AppCompatActivity() {
+class ListPopularFilmActivity : AppCompatActivity() {
 
     lateinit var recyclerView : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_film)
+        setContentView(R.layout.activity_list_popular_film)
 
         val recyclerView = findViewById<RecyclerView>(R.id.list_film_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -41,7 +41,7 @@ class ListFilmActivity : AppCompatActivity() {
                     it.vote_average
                 )
             }
-            recyclerView.adapter = FilmListAdapter(this@ListFilmActivity, films)
+            recyclerView.adapter = FilmListAdapter(this@ListPopularFilmActivity, films)
         }
     }
 
