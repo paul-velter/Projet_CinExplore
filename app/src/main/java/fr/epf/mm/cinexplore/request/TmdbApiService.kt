@@ -1,6 +1,7 @@
 package fr.epf.mm.cinexplore
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TmdbApiService {
@@ -15,6 +16,12 @@ interface TmdbApiService {
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
         @Query("page") page: Int
+    ): GetTmdbResult
+
+    @GET("movie/{movie_id}")
+    suspend fun searchMoviesById(
+        @Path("movie_id") id: Int,
+        @Query("api_key") apiKey: String
     ): GetTmdbResult
 }
 data class GetTmdbResult(val results: List<Film>)
