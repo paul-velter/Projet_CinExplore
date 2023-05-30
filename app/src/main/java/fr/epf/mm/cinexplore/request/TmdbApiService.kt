@@ -4,11 +4,11 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface TmdbApiService {
-//    @GET("movie/popular")
-//    suspend fun getPopularMovies(
-//        @Query("api_key") apiKey: String,
-//        @Query("page") page: Int
-//    ): GetTmdbResult
+    @GET("movie/popular")
+    suspend fun getPopularMovies(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): GetTmdbResult
 
     @GET("search/movie")
     suspend fun searchMoviesByTitle(

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import fr.epf.mm.cinexplore.model.Film
 import fr.epf.mm.cinexplore.R
+import fr.epf.mm.cinexplore.activity.DetailsFilmActivity
 
 class FilmViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
@@ -34,6 +35,13 @@ class FilmListAdapter (val context: Context, val films: List<Film>) : RecyclerVi
         Glide.with(context)
             .load("https://image.tmdb.org/t/p/w500/${film.posterPath}?api_key=79bc1a7b946265b5f9dd2e89b2a118b2")
             .into(film_poster)
+
+        val cardView = view.findViewById<CardView>(R.id.view_film_cardview)
+        cardView.setOnClickListener{
+            val intent = Intent(context, DetailsFilmActivity::class.java)
+            intent.putExtra("film", film)
+            context.startActivity(intent)
+        }
     }
 
 }

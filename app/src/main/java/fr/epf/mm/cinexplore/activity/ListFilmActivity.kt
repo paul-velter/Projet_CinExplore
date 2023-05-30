@@ -2,8 +2,6 @@ package fr.epf.mm.cinexplore.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.epf.mm.cinexplore.adapter.FilmListAdapter
@@ -14,13 +12,13 @@ import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class FilmListActivity : AppCompatActivity() {
+class ListFilmActivity : AppCompatActivity() {
 
     lateinit var recyclerView : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_list_film)
 
         val recyclerView = findViewById<RecyclerView>(R.id.list_film_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -32,23 +30,18 @@ class FilmListActivity : AppCompatActivity() {
 
         val tmdbService = retrofit.create(TmdbApiService::class.java)
 
-        val testButton = findViewById<Button>(R.id.button_test)
-
-        testButton.setOnClickListener {
-            runBlocking {
-                val films = tmdbService.searchMoviesByTitle("79bc1a7b946265b5f9dd2e89b2a118b2", "John Wick", 1).results.map {
-                    Film(
-                        it.id,
-                        it.poster_path,
-                        it.title,
-                        it.release_date,
-                        it.overview,
-                        it.vote_average
-                    )
-                }
-                recyclerView.adapter = FilmListAdapter(this@FilmListActivity, films)
-                Log.d("CLICK", films.toString())
+        runBlocking {
+            val films = tmdbService.getPopularMovies("79bc1a7b946265b5f9dd2e89b2a118b2", 1).results.map {
+                Film(
+                    it.id,
+                    it.poster_path,
+                    it.title,
+                    it.release_date,
+                    it.overview,
+                    it.vote_average
+                )
             }
+            recyclerView.adapter = FilmListAdapter(this@ListFilmActivity, films)
         }
     }
 

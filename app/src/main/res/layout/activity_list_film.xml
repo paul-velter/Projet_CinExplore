@@ -3,13 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.FilmListActivity">
-
-    <Button
-        android:id="@+id/button_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+    tools:context=".activity.ListFilmActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_film_recyclerview"
