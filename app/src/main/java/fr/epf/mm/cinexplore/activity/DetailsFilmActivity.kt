@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import fr.epf.mm.cinexplore.R
 import fr.epf.mm.cinexplore.model.Film
+import java.text.DecimalFormat
 
 class DetailsFilmActivity : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class DetailsFilmActivity : AppCompatActivity() {
         film_title.text = film?.title
 
         val film_rating = findViewById<TextView>(R.id.detail_film_rating_textView)
-        film_rating.text = film?.rating.toString()
+        film_rating.text = DecimalFormat("#.#").format(film?.vote_average)
 
         val film_synopsis = findViewById<TextView>(R.id.detail_film_synopsis_textView)
         film_synopsis.text = film?.synopsis

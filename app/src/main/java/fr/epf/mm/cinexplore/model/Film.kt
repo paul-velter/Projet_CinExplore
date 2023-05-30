@@ -9,8 +9,10 @@ data class Film(
     val posterPath: String?,
     val title: String,
     val release_date: String,
+    val runtime: Int,
     val synopsis: String,
-    val rating: Float
+    val vote_average: Float,
+    val vote_count: Int
 ) : Parcelable {
 
 }

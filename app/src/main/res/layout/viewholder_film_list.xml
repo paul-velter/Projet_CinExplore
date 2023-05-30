@@ -36,25 +36,32 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/view_film"
+                    android:id="@+id/view_film_genres_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/default_film_categorie" />
 
                 <TextView
-                    android:id="@+id/view_film_time"
+                    android:id="@+id/view_film_time_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Temps" />
 
                 <TextView
-                    android:id="@+id/view_film_rating_textView"
+                    android:id="@+id/view_film_voteAverage_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/default_film_rating" />
+
+                <TextView
+                    android:id="@+id/view_film_voteCount_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/default_film_voteCount" />
 
             </LinearLayout>
 

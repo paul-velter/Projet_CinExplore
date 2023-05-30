@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="Populaire"
         android:id="@+id/menu_bottomNav_popular_item"
-        android:icon="@drawable/ic_launcher_background"/>
+        android:icon="@drawable/baseline_whatshot_24"/>
     <item android:title="Recherche"
         android:id="@+id/menu_bottomNav_search_item"
-        android:icon="@drawable/ic_launcher_background"/>
+        android:icon="@drawable/baseline_search_24"/>
     <item android:title="Favoris"
         android:id="@+id/menu_bottomNav_favorite_item"
-        android:icon="@drawable/ic_launcher_background"/>
+        android:icon="@drawable/baseline_star_24"/>
 </menu>

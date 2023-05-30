@@ -37,8 +37,10 @@ class ListPopularFilmActivity : AppCompatActivity() {
                     it.poster_path,
                     it.title,
                     it.release_date,
+                    it.runtime,
                     it.overview,
-                    it.vote_average
+                    it.vote_average,
+                    it.vote_count
                 )
             }
             recyclerView.adapter = FilmListAdapter(this@ListPopularFilmActivity, films)

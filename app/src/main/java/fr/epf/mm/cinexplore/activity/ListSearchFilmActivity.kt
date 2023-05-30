@@ -2,6 +2,7 @@ package fr.epf.mm.cinexplore.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +22,7 @@ class ListSearchFilmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_search_film)
 
-        var currentQuery = "John Wick"
+        val qrCodeButton = findViewById<Button>(R.id.list_film_QrCode_button)
 
         val recyclerView = findViewById<RecyclerView>(R.id.list_film_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -33,7 +34,9 @@ class ListSearchFilmActivity : AppCompatActivity() {
 
         val tmdbService = retrofit.create(TmdbApiService::class.java)
 
-        fun searchFilms(query: String) {
+        var currentQuery = ""
+
+       fun searchFilms(query: String) {
             runBlocking {
                 val films = tmdbService.searchMoviesByTitle("79bc1a7b946265b5f9dd2e89b2a118b2", currentQuery, 1).results.map {
                     Film(
@@ -41,8 +44,10 @@ class ListSearchFilmActivity : AppCompatActivity() {
                         it.poster_path,
                         it.title,
                         it.release_date,
+                        it.runtime,
                         it.overview,
-                        it.vote_average
+                        it.vote_average,
+                        it.vote_count
                     )
                 }
                 recyclerView.adapter = FilmListAdapter(this@ListSearchFilmActivity, films)

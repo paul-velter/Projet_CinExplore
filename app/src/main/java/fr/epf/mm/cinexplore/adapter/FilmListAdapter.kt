@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import fr.epf.mm.cinexplore.model.Film
 import fr.epf.mm.cinexplore.R
 import fr.epf.mm.cinexplore.activity.DetailsFilmActivity
+import java.text.DecimalFormat
 
 class FilmViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
@@ -29,12 +30,23 @@ class FilmListAdapter (val context: Context, val films: List<Film>) : RecyclerVi
     override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
         val film = films[position]
         val view = holder.itemView
-        val film_title = view.findViewById<TextView>(R.id.view_film_title_textView)
-        film_title.text="${film.title}"
+
         val film_poster = view.findViewById<ImageView>(R.id.view_film_poster_imageView)
         Glide.with(context)
             .load("https://image.tmdb.org/t/p/w500/${film.posterPath}?api_key=79bc1a7b946265b5f9dd2e89b2a118b2")
             .into(film_poster)
+
+        val film_title = view.findViewById<TextView>(R.id.view_film_title_textView)
+        film_title.text = film.title
+
+        val film_rating = view.findViewById<TextView>(R.id.view_film_voteAverage_textView)
+        film_rating.text = DecimalFormat("#.#").format(film.vote_average)
+
+        val film_time = view.findViewById<TextView>(R.id.view_film_time_textView)
+        film_time.text = film.runtime.toString()
+
+        val film_voteCount = view.findViewById<TextView>(R.id.view_film_voteCount_textView)
+        film_voteCount.text = film.vote_count.toString()
 
         val cardView = view.findViewById<CardView>(R.id.view_film_cardview)
         cardView.setOnClickListener{

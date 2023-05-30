@@ -18,4 +18,4 @@ interface TmdbApiService {
     ): GetTmdbResult
 }
 data class GetTmdbResult(val results: List<Film>)
-data class Film(val id: Int, val poster_path: String?, val title: String, val release_date: String, val overview: String, val vote_average: Float)
+data class Film(val id: Int, val poster_path: String?, val title: String, val release_date: String, val runtime: Int, val overview: String, val vote_average: Float, val vote_count: Int)
