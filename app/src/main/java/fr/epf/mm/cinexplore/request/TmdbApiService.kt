@@ -22,7 +22,7 @@ interface TmdbApiService {
     suspend fun searchMoviesById(
         @Path("movie_id") id: Int,
         @Query("api_key") apiKey: String
-    ): GetTmdbResult
+    ): Film
 }
 data class GetTmdbResult(val results: List<Film>)
 data class Film(val id: Int, val poster_path: String?, val title: String, val release_date: String, val runtime: Int, val overview: String, val vote_average: Float, val vote_count: Int)
