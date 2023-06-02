@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.ListPopularFilmActivity">
+    tools:context=".activity.HomeActivity"
+    android:background="@color/black">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,19 +23,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="4dp"
-                android:layout_weight="4"
+                android:layout_weight="1"
                 app:iconifiedByDefault="false"
-                app:queryHint="Recherche ici ...">
+                app:queryHint="Recherche ici ..."
+                android:background="@drawable/test">
 
             </androidx.appcompat.widget.SearchView>
 
-            <Button
+            <ImageButton
                 android:id="@+id/list_film_QrCode_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="4dp"
-                android:layout_weight="1"
-                android:icon="@drawable/baseline_qr_code_scanner_24"/>
+                android:layout_weight="4"
+                android:icon="@drawable/qr_code_scanner_icon"
+                app:srcCompat="@drawable/qr_code_scanner_icon"
+                android:backgroundTint="@color/dark_gray"
+                app:tint="@color/white"
+                android:background="@drawable/test"/>
 
         </LinearLayout>
 

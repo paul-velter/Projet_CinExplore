@@ -4,9 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
-import android.widget.Button
+import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,23 +14,24 @@ import fr.epf.mm.cinexplore.adapter.FilmListAdapter
 import fr.epf.mm.cinexplore.model.Film
 import fr.epf.mm.cinexplore.R
 import fr.epf.mm.cinexplore.TmdbApiService
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ListSearchFilmActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchView: SearchView
-    private lateinit var qrCodeButton: Button
+    private lateinit var qrCodeButton: ImageButton
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val data = it.data?.getStringExtra(ScanQrCodeActivity.QR_CODE_VALUE)
-                Log.d("Resultat : ", data.toString())
+                Log.d("Result : ", data.toString())
                 if (!data.isNullOrEmpty()) {
                     val id = data.toIntOrNull()
                     if (id != null) {
@@ -47,28 +47,25 @@ class ListSearchFilmActivity : AppCompatActivity() {
         .build()
 
     private val tmdbService = retrofit.create(TmdbApiService::class.java)
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_search_film)
+        setContentView(R.layout.activity_home)
 
-        qrCodeButton = findViewById<Button>(R.id.list_film_QrCode_button)
+        qrCodeButton = findViewById(R.id.list_film_QrCode_button)
         initButtonClickListener()
 
-        recyclerView = findViewById<RecyclerView>(R.id.list_film_recyclerview)
+        recyclerView = findViewById(R.id.list_film_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        var currentQuery = ""
-
-        searchView = findViewById<SearchView>(R.id.list_film_searchBar_searchView)
+        searchView = findViewById(R.id.list_film_searchBar_searchView)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                currentQuery = newText
-                searchFilmsByTitle(currentQuery)
+                searchFilmsByTitle(newText)
                 return true
             }
         })
@@ -82,9 +79,9 @@ class ListSearchFilmActivity : AppCompatActivity() {
     }
 
     private fun searchFilmsByTitle(query: String) {
-        GlobalScope.launch(Dispatchers.Main) {
-            val films = tmdbService.searchMoviesByTitle("79bc1a7b946265b5f9dd2e89b2a118b2", query,1).results.map {
-                val filmDetails = tmdbService.searchMoviesById(it.id, "79bc1a7b946265b5f9dd2e89b2a118b2")
+        coroutineScope.launch {
+            val films = tmdbService.searchMoviesByTitle("79bc1a7b946265b5f9dd2e89b2a118b2", query,1).results.map { film ->
+                val filmDetails = tmdbService.searchMoviesById(film.id, "79bc1a7b946265b5f9dd2e89b2a118b2")
                 Film(
                     filmDetails.id,
                     filmDetails.poster_path,
@@ -98,14 +95,14 @@ class ListSearchFilmActivity : AppCompatActivity() {
                     filmDetails.vote_count
                 )
             }
-            recyclerView.adapter = FilmListAdapter(this@ListSearchFilmActivity, films)
+            recyclerView.adapter = FilmListAdapter(this@HomeActivity, films)
         }
     }
 
     private fun searchFilmsById(id: Int) {
-        GlobalScope.launch(Dispatchers.Main) {
+        coroutineScope.launch {
             val film = tmdbService.searchMoviesById(id, "79bc1a7b946265b5f9dd2e89b2a118b2")
-            Log.d("Resultat : ", film.toString())
+            Log.d("Result : ", film.toString())
 
         }
     }

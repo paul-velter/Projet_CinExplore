@@ -5,4 +5,8 @@
     <string name="default_film_categorie">Comédie</string>
     <string name="default_film_rating">5</string>
     <string name="default_film_voteCount">12</string>
+    <string name="default_film_time">Temps</string>
+    <string name="recommandations">Recommandations</string>
+    <string name="default_film_releaseDate">2016</string>
+    <string name="film_runtime">%1$d min.</string>
 </resources>
