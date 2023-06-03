@@ -66,7 +66,13 @@ class DetailsFilmActivity : AppCompatActivity() {
                 ) as MutableList<Film>
             } ?: mutableListOf()
 
-        film = (intent?.extras?.get("film") as? Film)!!
+        film = intent?.getParcelableExtra("film")!!
+
+        if (film != null) {
+            Log.d("détails result : ", film.toString())
+        } else {
+            Log.d("détails result : ", "le film est null")
+        }
 
         filmPoster = findViewById(R.id.detail_film_poster_imageView)
         Glide.with(this)
@@ -143,11 +149,11 @@ class DetailsFilmActivity : AppCompatActivity() {
                 isFavorite = true
                 listFavoriteFilms.add(film)
             }
-            updateListFavoritFilms()
+            updateListFavoriteFilms()
         }
     }
 
-    private fun updateListFavoritFilms(){
+    private fun updateListFavoriteFilms(){
         val editor = sharedPreferences.edit()
         editor.putString("favorites", Gson().toJson(listFavoriteFilms))
         editor.apply()

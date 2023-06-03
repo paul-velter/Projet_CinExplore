@@ -27,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var SearchRecyclerView: RecyclerView
+    private lateinit var searchRecyclerView: RecyclerView
     private lateinit var popularRecyclerView: RecyclerView
     private lateinit var favoriteRecyclerView: RecyclerView
     private lateinit var searchView: SearchView
@@ -70,8 +70,8 @@ class HomeActivity : AppCompatActivity() {
         qrCodeButton = findViewById(R.id.list_film_QrCode_button)
         initButtonClickListener()
 
-        SearchRecyclerView = findViewById(R.id.search_film_recyclerView)
-        SearchRecyclerView.layoutManager = LinearLayoutManager(this)
+        searchRecyclerView = findViewById(R.id.search_film_recyclerView)
+        searchRecyclerView.layoutManager = LinearLayoutManager(this)
 
         popularRecyclerView = findViewById(R.id.popular_film_recyclerView)
         popularRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -153,15 +153,30 @@ class HomeActivity : AppCompatActivity() {
                     filmDetails.vote_count
                 )
             }
-            SearchRecyclerView.adapter = FilmListAdapter(this@HomeActivity, films)
+            searchRecyclerView.adapter = FilmListAdapter(this@HomeActivity, films)
         }
     }
 
     private fun searchFilmsById(id: Int) {
         coroutineScope.launch {
             val film = tmdbService.searchMoviesById(id, "79bc1a7b946265b5f9dd2e89b2a118b2")
-            Log.d("Result : ", film.toString())
-
+            val filmScanned = Film(
+                film.id,
+                film.poster_path,
+                film.title,
+                film.genres.map { it.name },
+                film.genres.map { it.id },
+                film.release_date,
+                film.runtime,
+                film.overview,
+                film.vote_average,
+                film.vote_count
+            )
+            val intent = Intent(this@HomeActivity, DetailsFilmActivity::class.java)
+            intent.putExtra("film", filmScanned)
+            startActivity(intent)
         }
+
     }
 }
+
