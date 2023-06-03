@@ -9,4 +9,8 @@
     <string name="recommandations">Recommandations</string>
     <string name="default_film_releaseDate">2016</string>
     <string name="film_runtime">%1$d min.</string>
+    <string name="qr_code_description">Bouton QR Code</string>
+    <string name="popular">Tendence</string>
+    <string name="favorite">Favoris</string>
+    <string name="poster_description">Affiche du film</string>
 </resources>

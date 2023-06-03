@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.HomeActivity"
-    android:background="@color/black">
+    android:background="@color/black"
+    tools:context=".activity.HomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="-117dp"
+        tools:layout_editor_absoluteY="-30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,34 +24,75 @@
                 android:id="@+id/list_film_searchBar_searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/test"
                 app:iconifiedByDefault="false"
-                app:queryHint="Recherche ici ..."
-                android:background="@drawable/test">
-
-            </androidx.appcompat.widget.SearchView>
+                app:queryHint="Recherche ici ..." />
 
             <ImageButton
                 android:id="@+id/list_film_QrCode_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:layout_weight="4"
-                android:icon="@drawable/qr_code_scanner_icon"
-                app:srcCompat="@drawable/qr_code_scanner_icon"
+                android:background="@drawable/test"
                 android:backgroundTint="@color/dark_gray"
-                app:tint="@color/white"
-                android:background="@drawable/test"/>
+                android:contentDescription="@string/qr_code_description"
+                app:srcCompat="@drawable/qr_code_scanner_icon"
+                app:tint="@color/white" />
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_film_recyclerview"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_film_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableStartCompat="@drawable/fire_icon"
+                android:drawablePadding="3dp"
+                app:drawableTint="@color/orange"
+                android:gravity="center_vertical"
+                android:text="@string/popular"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/popular_film_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableStartCompat="@drawable/favorite_pressed_icon"
+                android:drawablePadding="3dp"
+                app:drawableTint="@color/red"
+                android:gravity="center_vertical"
+                android:text="@string/favorite"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/favorite_film_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

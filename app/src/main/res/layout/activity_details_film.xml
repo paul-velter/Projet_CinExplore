@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
@@ -17,7 +16,8 @@
             android:layout_height="300dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/ic_launcher_background"
+            android:contentDescription="@string/poster_description"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,14 +25,35 @@
             android:layout_margin="8dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/detail_film_title_textView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/default_film_title"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:id="@+id/detail_film_title_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_film_title"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="8" />
+
+                <ImageButton
+                    android:id="@+id/detail_film_favorite_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/qr_code_description"
+                    app:srcCompat="@drawable/favorite_unpressed_icon"
+                    android:background="@color/black"
+                    app:tint="@color/red"
+                    android:layout_weight="1"
+                    android:padding="5dp"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/detail_film_genres_textView"
@@ -64,9 +85,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/test"
-                    android:drawableStart="@drawable/star_icon"
+                    app:drawableStartCompat="@drawable/star_icon"
                     android:drawablePadding="3dp"
-                    android:drawableTint="@color/yellow"
+                    app:drawableTint="@color/yellow"
                     android:gravity="center_vertical"
                     android:padding="8dp"
                     android:text="@string/default_film_rating"
@@ -80,9 +101,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/test"
-                    android:drawableStart="@drawable/clock_icon"
+                    app:drawableStartCompat="@drawable/clock_icon"
                     android:drawablePadding="3dp"
-                    android:drawableTint="@color/yellow"
+                    app:drawableTint="@color/yellow"
                     android:gravity="center_vertical"
                     android:padding="8dp"
                     android:text="@string/default_film_rating"
@@ -114,10 +135,19 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_film_recommendation_recyclerview"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list_film_recommendation_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
     </LinearLayout>

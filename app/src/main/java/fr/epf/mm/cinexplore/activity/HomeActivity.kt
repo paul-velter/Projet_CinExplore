@@ -1,7 +1,9 @@
 package fr.epf.mm.cinexplore.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,10 +12,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import fr.epf.mm.cinexplore.adapter.FilmListAdapter
 import fr.epf.mm.cinexplore.model.Film
 import fr.epf.mm.cinexplore.R
 import fr.epf.mm.cinexplore.TmdbApiService
+import fr.epf.mm.cinexplore.adapter.FilmVerticalAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,9 +27,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var SearchRecyclerView: RecyclerView
+    private lateinit var popularRecyclerView: RecyclerView
+    private lateinit var favoriteRecyclerView: RecyclerView
     private lateinit var searchView: SearchView
     private lateinit var qrCodeButton: ImageButton
+    private lateinit var sharedPreferences: SharedPreferences
+    private var listFavoriteFilms = mutableListOf<Film>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     private val resultLauncher =
@@ -47,7 +56,13 @@ class HomeActivity : AppCompatActivity() {
         .build()
 
     private val tmdbService = retrofit.create(TmdbApiService::class.java)
-    
+
+    private val sharedPreferencesListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == "favorites") {
+            getFavoriteFilms()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -55,8 +70,20 @@ class HomeActivity : AppCompatActivity() {
         qrCodeButton = findViewById(R.id.list_film_QrCode_button)
         initButtonClickListener()
 
-        recyclerView = findViewById(R.id.list_film_recyclerview)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        SearchRecyclerView = findViewById(R.id.search_film_recyclerView)
+        SearchRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        popularRecyclerView = findViewById(R.id.popular_film_recyclerView)
+        popularRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        favoriteRecyclerView = findViewById(R.id.favorite_film_recyclerView)
+        favoriteRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        sharedPreferences = getSharedPreferences("MyFavorites", Context.MODE_PRIVATE)
+        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesListener)
+
+        getPopularFilms()
+        getFavoriteFilms()
 
         searchView = findViewById(R.id.list_film_searchBar_searchView)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -71,6 +98,17 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
+    private fun getFavoriteFilms() {
+        listFavoriteFilms = sharedPreferences.getString("favorites", null)?.let { json ->
+            Gson().fromJson<List<Film>>(
+                json,
+                object : TypeToken<List<Film>>() {}.type
+            ) as MutableList<Film>
+        } ?: mutableListOf()
+        favoriteRecyclerView.adapter = FilmVerticalAdapter(this@HomeActivity, listFavoriteFilms)
+
+    }
+
     private fun initButtonClickListener() {
         qrCodeButton.setOnClickListener {
             val intent = Intent(this, ScanQrCodeActivity::class.java)
@@ -78,6 +116,26 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun getPopularFilms(){
+        coroutineScope.launch {
+            val films = tmdbService.getPopularMovies("79bc1a7b946265b5f9dd2e89b2a118b2",1).results.map { film ->
+                val filmDetails = tmdbService.searchMoviesById(film.id, "79bc1a7b946265b5f9dd2e89b2a118b2")
+                Film(
+                    filmDetails.id,
+                    filmDetails.poster_path,
+                    filmDetails.title,
+                    filmDetails.genres.map { it.name },
+                    filmDetails.genres.map { it.id },
+                    filmDetails.release_date,
+                    filmDetails.runtime,
+                    filmDetails.overview,
+                    filmDetails.vote_average,
+                    filmDetails.vote_count
+                )
+            }
+            popularRecyclerView.adapter = FilmVerticalAdapter(this@HomeActivity, films)
+        }
+    }
     private fun searchFilmsByTitle(query: String) {
         coroutineScope.launch {
             val films = tmdbService.searchMoviesByTitle("79bc1a7b946265b5f9dd2e89b2a118b2", query,1).results.map { film ->
@@ -95,7 +153,7 @@ class HomeActivity : AppCompatActivity() {
                     filmDetails.vote_count
                 )
             }
-            recyclerView.adapter = FilmListAdapter(this@HomeActivity, films)
+            SearchRecyclerView.adapter = FilmListAdapter(this@HomeActivity, films)
         }
     }
 
