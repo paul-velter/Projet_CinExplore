@@ -1,5 +1,6 @@
 package fr.epf.mm.cinexplore.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -32,9 +33,10 @@ class DetailsFilmActivity : AppCompatActivity() {
     private lateinit var filmRating: TextView
     private lateinit var filmSynopsis: TextView
     private lateinit var filmTime: TextView
-    //private lateinit var filmVoteCount: TextView
+    private lateinit var filmVoteCount: TextView
     private lateinit var filmReleaseDate: TextView
     private lateinit var filmGenre: TextView
+    private lateinit var filmGenreRecommandation: TextView
     private lateinit var favoriteButton: ImageButton
     private var listFavoriteFilms = mutableListOf<Film>()
     private lateinit var film: Film
@@ -50,9 +52,10 @@ class DetailsFilmActivity : AppCompatActivity() {
         .build()
 
     private val tmdbService = retrofit.create(TmdbApiService::class.java)
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_details_film)
+        setContentView(R.layout.tests)
 
         recyclerView = findViewById(R.id.list_film_recommendation_recyclerview)
         recyclerView.layoutManager =
@@ -94,8 +97,14 @@ class DetailsFilmActivity : AppCompatActivity() {
         filmTime = findViewById(R.id.detail_film_time_textView)
         filmTime.text = resources.getString(R.string.film_runtime, film.runtime)
 
+        filmVoteCount = findViewById(R.id.detail_film_voteCount_textView)
+        filmVoteCount.text = film.vote_count.toString()
+
         filmReleaseDate = findViewById(R.id.detail_film_releaseDate_textView)
         filmReleaseDate.text = film.release_date
+
+        filmGenreRecommandation = findViewById(R.id.detail_film_genre_recommandation)
+        filmGenreRecommandation.text = film.genre.first().toString()
 
         favoriteButton = findViewById(R.id.detail_film_favorite_button)
         isFavorite = listFavoriteFilms.contains(film)

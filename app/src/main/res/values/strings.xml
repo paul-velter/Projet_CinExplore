@@ -6,11 +6,14 @@
     <string name="default_film_rating">5</string>
     <string name="default_film_voteCount">12</string>
     <string name="default_film_time">Temps</string>
-    <string name="recommandations">Recommandations</string>
+    <string name="recommandations">Autres films du genre</string>
     <string name="default_film_releaseDate">2016</string>
     <string name="film_runtime">%1$d min.</string>
     <string name="qr_code_description">Bouton QR Code</string>
     <string name="popular">Tendence</string>
     <string name="favorite">Favoris</string>
     <string name="poster_description">Affiche du film</string>
+    <string name="return_button_description">Bouton retour</string>
+    <string name="favorite_button_description">Bouton favoris</string>
+    <string name="synopsis">Synopsis</string>
 </resources>

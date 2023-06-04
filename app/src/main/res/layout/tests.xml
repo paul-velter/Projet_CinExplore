@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:id="@+id/linearLayout_topbar"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/detail_film_return_button"
+            android:contentDescription="@string/return_button_description"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/chevron_left_icon"
+            app:tint="@color/gray"
+            android:background="@drawable/test"
+            android:layout_weight="1"
+            android:layout_margin="5dp"/>
+
+        <ImageButton
+            android:id="@+id/detail_film_favorite_button"
+            android:contentDescription="@string/favorite_button_description"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/favorite_unpressed_icon"
+            app:tint="@color/red"
+            android:background="@drawable/test"
+            android:layout_weight="1"
+            android:layout_margin="5dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_topbar"
+        android:layout_marginTop="8dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp">
+
+            <ImageView
+                android:id="@+id/detail_film_poster_imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher_background"
+                android:contentDescription="@string/poster_description"/>
+        </androidx.cardview.widget.CardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginStart="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="fill_vertical">
+
+                <TextView
+                    android:id="@+id/detail_film_rating_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_film_rating"
+                    android:textColor="@color/gray"
+                    android:layout_weight="1"
+                    app:drawableStartCompat="@drawable/star_icon"
+                    android:drawablePadding="3dp"
+                    app:drawableTint="@color/yellow"
+                    android:gravity="center_vertical"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:id="@+id/detail_film_voteCount_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_film_voteCount"
+                    android:textColor="@color/gray"
+                    android:layout_weight="1"
+                    app:drawableStartCompat="@drawable/eye_icon"
+                    android:drawablePadding="3dp"
+                    app:drawableTint="@color/white"
+                    android:gravity="center_vertical"
+                    android:textSize="16dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/detail_film_time_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/default_film_time"
+                android:textColor="@color/gray"
+                android:layout_weight="1"
+                app:drawableStartCompat="@drawable/clock_icon"
+                android:drawablePadding="3dp"
+                app:drawableTint="@color/white"
+                android:gravity="center_vertical"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:id="@+id/detail_film_releaseDate_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="@string/default_film_releaseDate"
+                android:textColor="@color/white"
+                android:textSize="16dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_coprs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_details">
+
+        <TextView
+            android:id="@+id/detail_film_title_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/default_film_title"
+            android:textColor="@color/white"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:id="@+id/detail_film_genres_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/default_film_categorie"
+            android:textColor="@color/gray"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/detail_film_synopsis_titre_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/synopsis"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/detail_film_synopsis_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/default_film_synopsis"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_bottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_coprs">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:text="@string/recommandations"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginEnd="5dp"/>
+            <TextView
+                android:id="@+id/detail_film_genre_recommandation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:text="@string/default_film_categorie"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_film_recommendation_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
