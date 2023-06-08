@@ -180,7 +180,8 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_details">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_details"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout_bottom">
 
         <TextView
             android:id="@+id/detail_film_title_textView"
@@ -212,7 +213,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="110dp">
+            android:layout_height="120dp">
 
             <TextView
                 android:id="@+id/detail_film_synopsis_textView"
@@ -232,8 +233,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_coprs">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -266,7 +266,6 @@
             android:id="@+id/list_film_recommendation_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
 
     </LinearLayout>
 
