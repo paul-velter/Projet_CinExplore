@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.DecimalFormat
+import java.text.ParseException
 import java.util.*
 
 class DetailsFilmActivity : AppCompatActivity() {
@@ -39,6 +41,7 @@ class DetailsFilmActivity : AppCompatActivity() {
     private lateinit var filmTime: TextView
     private lateinit var filmVoteCount: TextView
     private lateinit var filmReleaseDate: TextView
+    private lateinit var filmDisop: TextView
     private lateinit var filmGenre: TextView
     private lateinit var filmGenreRecommandation: TextView
     private lateinit var favoriteButton: ImageButton
@@ -58,6 +61,7 @@ class DetailsFilmActivity : AppCompatActivity() {
         .build()
 
     private val tmdbService = retrofit.create(TmdbApiService::class.java)
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,11 +73,11 @@ class DetailsFilmActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("MyFavorites", Context.MODE_PRIVATE)
         listFavoriteFilms = sharedPreferences.getString("favorites", null)?.let { json ->
-                Gson().fromJson<List<Film>>(
-                    json,
-                    object : TypeToken<List<Film>>() {}.type
-                ) as MutableList<Film>
-            } ?: mutableListOf()
+            Gson().fromJson<List<Film>>(
+                json,
+                object : TypeToken<List<Film>>() {}.type
+            ) as MutableList<Film>
+        } ?: mutableListOf()
 
         film = intent?.getParcelableExtra("film")!!
 
@@ -101,8 +105,14 @@ class DetailsFilmActivity : AppCompatActivity() {
         filmVoteCount.text = film.vote_count.toString()
 
         filmReleaseDate = findViewById(R.id.detail_film_releaseDate_textView)
-        val releaseDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(film.release_date)
-        filmReleaseDate.text = SimpleDateFormat("yyyy", Locale.getDefault()).format(releaseDate)
+        try {
+            val releaseDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(film.release_date)
+            val formattedDate = SimpleDateFormat("yyyy", Locale.getDefault()).format(releaseDate)
+            filmReleaseDate.text = formattedDate
+        } catch (e: ParseException) {
+            filmReleaseDate.text = "Date non disponible"
+            e.printStackTrace()
+        }
 
         filmGenreRecommandation = findViewById(R.id.detail_film_genre_recommandation)
         filmGenreRecommandation.text = film.genre.first().toString()
@@ -116,8 +126,13 @@ class DetailsFilmActivity : AppCompatActivity() {
         initReturnButton()
 
         trailerButton = findViewById(R.id.detail_film_trailer_button)
-        Log.d("lien trailer : ", film.trailer_link.toString())
         film.trailer_link?.let { initTailerButton(it) }
+
+        filmDisop = findViewById(R.id.detail_film_trailerState_textView)
+
+        if (film.trailer_link.isNullOrEmpty()) {
+            initNoTrailer()
+        }
 
         coroutineScope.launch {
             val films = film.genre_id.first().let { genreId ->
@@ -149,17 +164,17 @@ class DetailsFilmActivity : AppCompatActivity() {
     }
 
     private fun initTailerButton(Url: String) {
-        trailerButton.setOnClickListener{
-            Log.d("trailer cilck : ", film.trailer_link.toString())
+        trailerButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(Url))
             startActivity(intent)
         }
     }
 
     private fun initReturnButton() {
-        returnButton.setOnClickListener{
+        returnButton.setOnClickListener {
             onBackPressed()
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(returnButton.windowToken, 0)
             finish()
         }
@@ -189,15 +204,22 @@ class DetailsFilmActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateListFavoriteFilms(){
+    private fun updateListFavoriteFilms() {
         val editor = sharedPreferences.edit()
         editor.putString("favorites", Gson().toJson(listFavoriteFilms))
         editor.apply()
     }
 
     private fun getTrailerLink(videosResult: List<Video>?): String? {
-        val trailer = videosResult?.find { it.site == "YouTube" && it.type == "Trailer" && it.official }
+        val trailer = videosResult?.find { it.site == "YouTube" && it.type == "Trailer" }
         return trailer?.let { "https://www.youtube.com/watch?v=${it.key}" }
+    }
+
+    private fun initNoTrailer(){
+        trailerButton.setText("Indisponible")
+        trailerButton.setTextColor(ContextCompat.getColor(this, R.color.gray))
+        trailerButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.not_play_icon, 0, 0, 0)
+        filmDisop.text = "Aucune bande-annonce disponible"
     }
 
 }

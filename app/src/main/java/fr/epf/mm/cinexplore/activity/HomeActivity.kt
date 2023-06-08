@@ -7,7 +7,6 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
@@ -34,7 +33,6 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var favoriteRecyclerView: RecyclerView
     private lateinit var searchView: SearchView
     private lateinit var qrCodeButton: ImageButton
-    private lateinit var homeButton: ImageButton
     private lateinit var sharedPreferences: SharedPreferences
     private var listFavoriteFilms = mutableListOf<Film>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
@@ -72,11 +70,9 @@ class HomeActivity : AppCompatActivity() {
 
         qrCodeButton = findViewById(R.id.list_film_QrCode_button)
         initButtonClickListener()
-        homeButton = findViewById(R.id.list_film_home_button)
-        initHomeButtonClickListener()
 
         searchRecyclerView = findViewById(R.id.search_film_recyclerView)
-        searchRecyclerView.layoutManager = LinearLayoutManager(this)
+        searchRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         popularRecyclerView = findViewById(R.id.popular_film_recyclerView)
         popularRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -105,14 +101,6 @@ class HomeActivity : AppCompatActivity() {
                 return true
             }
         })
-    }
-
-    private fun initHomeButtonClickListener() {
-        homeButton.setOnClickListener{
-            searchView.setQuery("", false)
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(searchView.windowToken, 0)
-        }
     }
 
     private fun getFavoriteFilms() {
@@ -206,7 +194,7 @@ class HomeActivity : AppCompatActivity() {
         searchView.clearFocus()
     }
     private fun getTrailerLink(videos: List<Video>?): String? {
-        val trailer = videos?.find { it.site == "YouTube" && it.type == "Trailer" && it.official }
+        val trailer = videos?.find { it.site == "YouTube" && it.type == "Trailer" }
         return trailer?.let { "https://www.youtube.com/watch?v=${it.key}" }
     }
 }
