@@ -14,7 +14,9 @@ data class Film(
     val runtime: Int,
     val overview: String,
     val vote_average: Float,
-    val vote_count: Int
+    val vote_count: Int,
+    val trailer_link: String?
+
 ) : Parcelable {
 
 }

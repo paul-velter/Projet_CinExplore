@@ -1,5 +1,6 @@
 package fr.epf.mm.cinexplore.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -17,7 +18,7 @@ import java.text.DecimalFormat
 
 class FilmViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-class FilmListAdapter (val context: Context, val films: List<Film>) : RecyclerView.Adapter<FilmViewHolder>(){
+class FilmListAdapter (private val context: Context, private val films: List<Film>) : RecyclerView.Adapter<FilmViewHolder>(){
 
     private lateinit var filmPoster: ImageView
     private lateinit var filmTitle: TextView
@@ -34,6 +35,7 @@ class FilmListAdapter (val context: Context, val films: List<Film>) : RecyclerVi
 
     override fun getItemCount() = films.size
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
         val film = films[position]
         val view = holder.itemView
@@ -56,7 +58,7 @@ class FilmListAdapter (val context: Context, val films: List<Film>) : RecyclerVi
         filmVoteCount.text = film.vote_count.toString()
 
         filmGenre = view.findViewById(R.id.view_film_genres_textView)
-        filmGenre.text = film.genre.map { it }.joinToString(" / ")
+        filmGenre.text = film.genre.joinToString(" / ") { it }
 
 
         cardView = view.findViewById(R.id.view_film_cardview)

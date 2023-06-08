@@ -17,14 +17,13 @@ import java.text.DecimalFormat
 
 class FilmVerticalViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-class FilmVerticalAdapter (val context: Context, val films: List<Film>) : RecyclerView.Adapter<FilmVerticalViewHolder>(){
+class FilmVerticalAdapter(private val context: Context, private val films: List<Film>) :
+    RecyclerView.Adapter<FilmVerticalViewHolder>() {
 
     private lateinit var filmPoster: ImageView
     private lateinit var filmTitle: TextView
-    private lateinit var filmRating: TextView
-    private lateinit var filmTime: TextView
-    private lateinit var filmVoteCount: TextView
     private lateinit var filmGenre: TextView
+    private lateinit var filmRating: TextView
     private lateinit var cardView: CardView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmVerticalViewHolder {
@@ -47,21 +46,13 @@ class FilmVerticalAdapter (val context: Context, val films: List<Film>) : Recycl
         filmTitle = view.findViewById(R.id.view_film_title_textView)
         filmTitle.text = film.title
 
-//        filmRating = view.findViewById(R.id.view_film_voteAverage_textView)
-//        filmRating.text = DecimalFormat("#.#").format(film.vote_average)
-
-//        filmTime = view.findViewById(R.id.view_film_time_textView)
-//        filmTime.text = film.runtime.toString() + " min."
-
-//        filmVoteCount = view.findViewById(R.id.view_film_voteCount_textView)
-//        filmVoteCount.text = film.vote_count.toString()
-
         filmGenre = view.findViewById(R.id.view_film_genres_textView)
-        filmGenre.text = film.genre.map { it }.joinToString(" / ")
+        filmGenre.text = film.genre.joinToString(" / ") { it }
 
-
+        filmRating = view.findViewById(R.id.view_film_rating_textView)
+        filmRating.text = DecimalFormat("#.#").format(film.vote_average)
         cardView = view.findViewById(R.id.view_film_cardview)
-        cardView.setOnClickListener{
+        cardView.setOnClickListener {
             val intent = Intent(context, DetailsFilmActivity::class.java)
             intent.putExtra("film", film)
             context.startActivity(intent)

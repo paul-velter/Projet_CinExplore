@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
@@ -18,6 +19,7 @@ import fr.epf.mm.cinexplore.adapter.FilmListAdapter
 import fr.epf.mm.cinexplore.model.Film
 import fr.epf.mm.cinexplore.R
 import fr.epf.mm.cinexplore.TmdbApiService
+import fr.epf.mm.cinexplore.Video
 import fr.epf.mm.cinexplore.adapter.FilmVerticalAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +34,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var favoriteRecyclerView: RecyclerView
     private lateinit var searchView: SearchView
     private lateinit var qrCodeButton: ImageButton
+    private lateinit var homeButton: ImageButton
     private lateinit var sharedPreferences: SharedPreferences
     private var listFavoriteFilms = mutableListOf<Film>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
@@ -69,6 +72,8 @@ class HomeActivity : AppCompatActivity() {
 
         qrCodeButton = findViewById(R.id.list_film_QrCode_button)
         initButtonClickListener()
+        homeButton = findViewById(R.id.list_film_home_button)
+        initHomeButtonClickListener()
 
         searchRecyclerView = findViewById(R.id.search_film_recyclerView)
         searchRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -93,9 +98,21 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 searchFilmsByTitle(newText)
+                if (newText == "") {
+                    getPopularFilms()
+                    getFavoriteFilms()
+                }
                 return true
             }
         })
+    }
+
+    private fun initHomeButtonClickListener() {
+        homeButton.setOnClickListener{
+            searchView.setQuery("", false)
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(searchView.windowToken, 0)
+        }
     }
 
     private fun getFavoriteFilms() {
@@ -130,12 +147,15 @@ class HomeActivity : AppCompatActivity() {
                     filmDetails.runtime,
                     filmDetails.overview,
                     filmDetails.vote_average,
-                    filmDetails.vote_count
+                    filmDetails.vote_count,
+                    getTrailerLink(filmDetails.videos?.results)
                 )
             }
             popularRecyclerView.adapter = FilmVerticalAdapter(this@HomeActivity, films)
+            Log.d("trailer : ", films.toString())
         }
     }
+
     private fun searchFilmsByTitle(query: String) {
         coroutineScope.launch {
             val films = tmdbService.searchMoviesByTitle("79bc1a7b946265b5f9dd2e89b2a118b2", query,1).results.map { film ->
@@ -150,7 +170,8 @@ class HomeActivity : AppCompatActivity() {
                     filmDetails.runtime,
                     filmDetails.overview,
                     filmDetails.vote_average,
-                    filmDetails.vote_count
+                    filmDetails.vote_count,
+                    getTrailerLink(filmDetails.videos?.results)
                 )
             }
             searchRecyclerView.adapter = FilmListAdapter(this@HomeActivity, films)
@@ -170,13 +191,23 @@ class HomeActivity : AppCompatActivity() {
                 film.runtime,
                 film.overview,
                 film.vote_average,
-                film.vote_count
+                film.vote_count,
+                getTrailerLink(film.videos?.results)
             )
             val intent = Intent(this@HomeActivity, DetailsFilmActivity::class.java)
             intent.putExtra("film", filmScanned)
             startActivity(intent)
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        searchView.clearFocus()
+    }
+    private fun getTrailerLink(videos: List<Video>?): String? {
+        val trailer = videos?.find { it.site == "YouTube" && it.type == "Trailer" && it.official }
+        return trailer?.let { "https://www.youtube.com/watch?v=${it.key}" }
     }
 }
 

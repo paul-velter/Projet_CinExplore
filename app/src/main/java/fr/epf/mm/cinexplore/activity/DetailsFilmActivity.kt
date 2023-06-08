@@ -2,12 +2,14 @@ package fr.epf.mm.cinexplore.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.icu.text.SimpleDateFormat
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +18,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import fr.epf.mm.cinexplore.R
 import fr.epf.mm.cinexplore.TmdbApiService
+import fr.epf.mm.cinexplore.Video
 import fr.epf.mm.cinexplore.adapter.FilmVerticalAdapter
 import fr.epf.mm.cinexplore.model.Film
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +27,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.DecimalFormat
+import java.util.*
 
 class DetailsFilmActivity : AppCompatActivity() {
 
@@ -38,6 +42,8 @@ class DetailsFilmActivity : AppCompatActivity() {
     private lateinit var filmGenre: TextView
     private lateinit var filmGenreRecommandation: TextView
     private lateinit var favoriteButton: ImageButton
+    private lateinit var returnButton: ImageButton
+    private lateinit var trailerButton: Button
     private var listFavoriteFilms = mutableListOf<Film>()
     private lateinit var film: Film
     private var isFavorite = false
@@ -55,7 +61,7 @@ class DetailsFilmActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.tests)
+        setContentView(R.layout.activity_details_film)
 
         recyclerView = findViewById(R.id.list_film_recommendation_recyclerview)
         recyclerView.layoutManager =
@@ -70,12 +76,6 @@ class DetailsFilmActivity : AppCompatActivity() {
             } ?: mutableListOf()
 
         film = intent?.getParcelableExtra("film")!!
-
-        if (film != null) {
-            Log.d("détails result : ", film.toString())
-        } else {
-            Log.d("détails result : ", "le film est null")
-        }
 
         filmPoster = findViewById(R.id.detail_film_poster_imageView)
         Glide.with(this)
@@ -101,7 +101,8 @@ class DetailsFilmActivity : AppCompatActivity() {
         filmVoteCount.text = film.vote_count.toString()
 
         filmReleaseDate = findViewById(R.id.detail_film_releaseDate_textView)
-        filmReleaseDate.text = film.release_date
+        val releaseDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(film.release_date)
+        filmReleaseDate.text = SimpleDateFormat("yyyy", Locale.getDefault()).format(releaseDate)
 
         filmGenreRecommandation = findViewById(R.id.detail_film_genre_recommandation)
         filmGenreRecommandation.text = film.genre.first().toString()
@@ -110,6 +111,13 @@ class DetailsFilmActivity : AppCompatActivity() {
         isFavorite = listFavoriteFilms.contains(film)
         initFavoriteButton()
         initFavoriteButtonClickListener()
+
+        returnButton = findViewById(R.id.detail_film_return_button)
+        initReturnButton()
+
+        trailerButton = findViewById(R.id.detail_film_trailer_button)
+        Log.d("lien trailer : ", film.trailer_link.toString())
+        film.trailer_link?.let { initTailerButton(it) }
 
         coroutineScope.launch {
             val films = film.genre_id.first().let { genreId ->
@@ -130,12 +138,31 @@ class DetailsFilmActivity : AppCompatActivity() {
                         filmDetails.overview,
                         filmDetails.vote_average,
                         filmDetails.vote_count,
+                        getTrailerLink(filmDetails.videos?.results)
                     )
                 }
+
             }
             recyclerView.adapter = FilmVerticalAdapter(this@DetailsFilmActivity, films)
         }
 
+    }
+
+    private fun initTailerButton(Url: String) {
+        trailerButton.setOnClickListener{
+            Log.d("trailer cilck : ", film.trailer_link.toString())
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(Url))
+            startActivity(intent)
+        }
+    }
+
+    private fun initReturnButton() {
+        returnButton.setOnClickListener{
+            onBackPressed()
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(returnButton.windowToken, 0)
+            finish()
+        }
     }
 
     private fun initFavoriteButton() {
@@ -166,6 +193,11 @@ class DetailsFilmActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.putString("favorites", Gson().toJson(listFavoriteFilms))
         editor.apply()
+    }
+
+    private fun getTrailerLink(videosResult: List<Video>?): String? {
+        val trailer = videosResult?.find { it.site == "YouTube" && it.type == "Trailer" && it.official }
+        return trailer?.let { "https://www.youtube.com/watch?v=${it.key}" }
     }
 
 }

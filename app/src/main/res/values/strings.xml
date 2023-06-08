@@ -10,10 +10,12 @@
     <string name="default_film_releaseDate">2016</string>
     <string name="film_runtime">%1$d min.</string>
     <string name="qr_code_description">Bouton QR Code</string>
-    <string name="popular">Tendence</string>
+    <string name="popular">Tendance</string>
     <string name="favorite">Favoris</string>
     <string name="poster_description">Affiche du film</string>
     <string name="return_button_description">Bouton retour</string>
     <string name="favorite_button_description">Bouton favoris</string>
     <string name="synopsis">Synopsis</string>
+    <string name="titre_film_releaseDate">Date de sortie :</string>
+    <string name="default_title_button_trailer">Bande-annonce</string>
 </resources>

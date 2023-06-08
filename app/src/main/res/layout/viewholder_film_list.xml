@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="@color/dark_gray"
-    app:cardCornerRadius="20dp">
+    app:cardCornerRadius="18dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/background">
 
         <ImageView
             android:id="@+id/view_film_poster_imageView"
@@ -43,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/default_film_categorie"
-                android:textColor="@color/gray" />
+                android:textColor="@color/gray"
+                android:textSize="13sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,7 +63,8 @@
                     android:drawableTint="@color/yellow"
                     android:gravity="center_vertical"
                     android:text="@string/default_film_rating"
-                    android:textColor="@color/gray" />
+                    android:textColor="@color/gray"
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:id="@+id/view_film_voteCount_textView"
@@ -70,10 +72,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/eye_icon"
+                    android:drawableTint="@color/white"
                     android:drawablePadding="3dp"
                     android:gravity="center_vertical"
                     android:text="@string/default_film_voteCount"
-                    android:textColor="@color/gray" />
+                    android:textColor="@color/gray"
+                    android:textSize="15sp"/>
             </LinearLayout>
 
             <TextView
@@ -82,10 +86,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableStart="@drawable/clock_icon"
+                android:drawableTint="@color/white"
                 android:drawablePadding="3dp"
                 android:gravity="center_vertical"
                 android:text="@string/default_film_time"
-                android:textColor="@color/gray" />
+                android:textColor="@color/gray"
+                android:textSize="15sp"/>
 
         </LinearLayout>
 
